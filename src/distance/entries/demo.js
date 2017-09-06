@@ -12,12 +12,12 @@ export default class Demo extends Component {
     static LevenshteinDistance = (v1, v2) => {
         const len1 = v1.length;
         const len2 = v2.length;
-        const matrix = [];           // matrix
-        let i;                  // iterates through v1
-        let j;                  // iterates through v2
-        let sIndex;                // ith character of v1
-        let tIndex;                // jth character of v2
-        let cost;               // cost
+        const matrix = [];  // matrix
+        let i;              // iterates through v1
+        let j;              // iterates through v2
+        let sIndex;         // ith character of v1
+        let tIndex;         // jth character of v2
+        let cost;           // cost
 
         // Step 1
         if (len1 === 0) return len2;
@@ -36,30 +36,24 @@ export default class Demo extends Component {
         // Step 3
         for (i = 1; i <= len1; i++) {
             sIndex = v1.charAt(i - 1);
-            // Step 4
             for (j = 1; j <= len2; j++) {
                 tIndex = v2.charAt(j - 1);
-                // Step 5
                 if (sIndex === tIndex) {
                     cost = 0;
                 } else {
                     cost = 1;
                 }
 
-                // Step 6
-                matrix[i][j] = Demo.Minimum(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+                matrix[i][j] = Demo.Minimum(
+                    matrix[i - 1][j] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j - 1] + cost
+                );
             }
         }
 
-        // Step 7
+        // Step 4
         return matrix[len1][len2];
-    };
-
-    // 求两个字符串的相似度,返回相似度百分比
-    static LevenshteinDistancePercent = (v1, v2) => {
-        const maxlength = v1.length > v2.length ? v1.length : v2.length;
-        const distance = Demo.LevenshteinDistance(v1, v2);
-        return (1 - (distance / maxlength)).toFixed(4);
     };
 
     constructor() {
@@ -77,8 +71,12 @@ export default class Demo extends Component {
             value2,
         } = this.state;
 
-        const result = Demo.LevenshteinDistancePercent(value1, value2);
+        const distance = Demo.LevenshteinDistance(value1, value2);
+        const maxLength = value1.length > value2.length ? value1.length : value2.length;
+        const result = (1 - (distance / maxLength)).toFixed(4);
+
         this.setState({
+            distance,
             result,
         });
     };
@@ -99,6 +97,7 @@ export default class Demo extends Component {
         const {
             value1,
             value2,
+            distance,
             result,
         } = this.state;
 
@@ -116,7 +115,8 @@ export default class Demo extends Component {
                     onChange={this.handleChange2}
                 />
                 <Button style={{ marginTop: '20px' }} onClick={this.handleClick}>计算</Button>
-                <p style={{ marginTop: '20px', fontSize: '18px' }}>Result: {result}</p>
+                <p style={{ marginTop: '20px', fontSize: '18px' }}>最小距离: {distance}</p>
+                <p style={{ marginTop: '20px', fontSize: '18px' }}>相似度: {result}</p>
             </div>
         );
     }

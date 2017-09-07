@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
 import { Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 import './demo.pcss';
@@ -47,7 +46,7 @@ export default class Demo extends Component {
                 matrix[i][j] = Demo.Minimum(
                     matrix[i - 1][j] + 1,
                     matrix[i][j - 1] + 1,
-                    matrix[i - 1][j - 1] + cost
+                    matrix[i - 1][j - 1] + cost,
                 );
             }
         }
@@ -115,14 +114,9 @@ export default class Demo extends Component {
                     onChange={this.handleChange2}
                 />
                 <Button style={{ marginTop: '20px' }} onClick={this.handleClick}>计算</Button>
-                <p style={{ marginTop: '20px', fontSize: '18px' }}>最小距离: {distance}</p>
+                <p style={{ marginTop: '20px', fontSize: '18px' }}>最小编辑距离: {distance}</p>
                 <p style={{ marginTop: '20px', fontSize: '18px' }}>相似度: {result}</p>
             </div>
         );
     }
 }
-
-render(
-    <Demo />,
-    document.getElementById('app'),
-);
